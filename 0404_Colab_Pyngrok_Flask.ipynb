@@ -1,0 +1,198 @@
+{
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "8XdYKeIF07IK",
+        "outputId": "a46c009c-6f9c-4128-9332-c57b39834eb5"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Requirement already satisfied: Flask in /usr/local/lib/python3.12/dist-packages (3.1.2)\n",
+            "Collecting pyngrok\n",
+            "  Downloading pyngrok-7.4.1-py3-none-any.whl.metadata (8.1 kB)\n",
+            "Collecting line-bot-sdk\n",
+            "  Downloading line_bot_sdk-3.21.0-py2.py3-none-any.whl.metadata (13 kB)\n",
+            "Requirement already satisfied: requests in /usr/local/lib/python3.12/dist-packages (2.32.4)\n",
+            "Requirement already satisfied: blinker>=1.9.0 in /usr/local/lib/python3.12/dist-packages (from Flask) (1.9.0)\n",
+            "Requirement already satisfied: click>=8.1.3 in /usr/local/lib/python3.12/dist-packages (from Flask) (8.3.0)\n",
+            "Requirement already satisfied: itsdangerous>=2.2.0 in /usr/local/lib/python3.12/dist-packages (from Flask) (2.2.0)\n",
+            "Requirement already satisfied: jinja2>=3.1.2 in /usr/local/lib/python3.12/dist-packages (from Flask) (3.1.6)\n",
+            "Requirement already satisfied: markupsafe>=2.1.1 in /usr/local/lib/python3.12/dist-packages (from Flask) (3.0.3)\n",
+            "Requirement already satisfied: werkzeug>=3.1.0 in /usr/local/lib/python3.12/dist-packages (from Flask) (3.1.3)\n",
+            "Requirement already satisfied: PyYAML>=5.1 in /usr/local/lib/python3.12/dist-packages (from pyngrok) (6.0.3)\n",
+            "Requirement already satisfied: urllib3<3,>=2.0.5 in /usr/local/lib/python3.12/dist-packages (from line-bot-sdk) (2.5.0)\n",
+            "Requirement already satisfied: aiohttp<4,>=3.10.9 in /usr/local/lib/python3.12/dist-packages (from line-bot-sdk) (3.13.2)\n",
+            "Requirement already satisfied: future>=1.0.0 in /usr/local/lib/python3.12/dist-packages (from line-bot-sdk) (1.0.0)\n",
+            "Requirement already satisfied: pydantic<3,>=2.0.3 in /usr/local/lib/python3.12/dist-packages (from line-bot-sdk) (2.11.10)\n",
+            "Collecting aenum<4,>=3.1.11 (from line-bot-sdk)\n",
+            "  Downloading aenum-3.1.16-py3-none-any.whl.metadata (3.8 kB)\n",
+            "Requirement already satisfied: python_dateutil<3,>=2.5.3 in /usr/local/lib/python3.12/dist-packages (from line-bot-sdk) (2.9.0.post0)\n",
+            "Collecting Deprecated>=1.2.18 (from line-bot-sdk)\n",
+            "  Downloading deprecated-1.3.1-py2.py3-none-any.whl.metadata (5.9 kB)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests) (3.4.4)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests) (3.11)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests) (2025.10.5)\n",
+            "Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (2.6.1)\n",
+            "Requirement already satisfied: aiosignal>=1.4.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (1.4.0)\n",
+            "Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (25.4.0)\n",
+            "Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (1.8.0)\n",
+            "Requirement already satisfied: multidict<7.0,>=4.5 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (6.7.0)\n",
+            "Requirement already satisfied: propcache>=0.2.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (0.4.1)\n",
+            "Requirement already satisfied: yarl<2.0,>=1.17.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp<4,>=3.10.9->line-bot-sdk) (1.22.0)\n",
+            "Requirement already satisfied: wrapt<3,>=1.10 in /usr/local/lib/python3.12/dist-packages (from Deprecated>=1.2.18->line-bot-sdk) (2.0.1)\n",
+            "Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/dist-packages (from pydantic<3,>=2.0.3->line-bot-sdk) (0.7.0)\n",
+            "Requirement already satisfied: pydantic-core==2.33.2 in /usr/local/lib/python3.12/dist-packages (from pydantic<3,>=2.0.3->line-bot-sdk) (2.33.2)\n",
+            "Requirement already satisfied: typing-extensions>=4.12.2 in /usr/local/lib/python3.12/dist-packages (from pydantic<3,>=2.0.3->line-bot-sdk) (4.15.0)\n",
+            "Requirement already satisfied: typing-inspection>=0.4.0 in /usr/local/lib/python3.12/dist-packages (from pydantic<3,>=2.0.3->line-bot-sdk) (0.4.2)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python_dateutil<3,>=2.5.3->line-bot-sdk) (1.17.0)\n",
+            "Downloading pyngrok-7.4.1-py3-none-any.whl (25 kB)\n",
+            "Downloading line_bot_sdk-3.21.0-py2.py3-none-any.whl (818 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m818.9/818.9 kB\u001b[0m \u001b[31m11.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m00:01\u001b[0m0:01\u001b[0m\n",
+            "\u001b[?25hDownloading aenum-3.1.16-py3-none-any.whl (165 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m165.6/165.6 kB\u001b[0m \u001b[31m14.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading deprecated-1.3.1-py2.py3-none-any.whl (11 kB)\n",
+            "Installing collected packages: aenum, pyngrok, Deprecated, line-bot-sdk\n",
+            "Successfully installed Deprecated-1.3.1 aenum-3.1.16 line-bot-sdk-3.21.0 pyngrok-7.4.1\n",
+            "Requirement already satisfied: google-genai in /usr/local/lib/python3.12/dist-packages (1.49.0)\n",
+            "Requirement already satisfied: anyio<5.0.0,>=4.8.0 in /usr/local/lib/python3.12/dist-packages (from google-genai) (4.11.0)\n",
+            "Requirement already satisfied: google-auth<3.0.0,>=2.14.1 in /usr/local/lib/python3.12/dist-packages (from google-genai) (2.38.0)\n",
+            "Requirement already satisfied: httpx<1.0.0,>=0.28.1 in /usr/local/lib/python3.12/dist-packages (from google-genai) (0.28.1)\n",
+            "Requirement already satisfied: pydantic<3.0.0,>=2.9.0 in /usr/local/lib/python3.12/dist-packages (from google-genai) (2.11.10)\n",
+            "Requirement already satisfied: requests<3.0.0,>=2.28.1 in /usr/local/lib/python3.12/dist-packages (from google-genai) (2.32.4)\n",
+            "Requirement already satisfied: tenacity<9.2.0,>=8.2.3 in /usr/local/lib/python3.12/dist-packages (from google-genai) (8.5.0)\n",
+            "Requirement already satisfied: websockets<15.1.0,>=13.0.0 in /usr/local/lib/python3.12/dist-packages (from google-genai) (15.0.1)\n",
+            "Requirement already satisfied: typing-extensions<5.0.0,>=4.11.0 in /usr/local/lib/python3.12/dist-packages (from google-genai) (4.15.0)\n",
+            "Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.12/dist-packages (from anyio<5.0.0,>=4.8.0->google-genai) (3.11)\n",
+            "Requirement already satisfied: sniffio>=1.1 in /usr/local/lib/python3.12/dist-packages (from anyio<5.0.0,>=4.8.0->google-genai) (1.3.1)\n",
+            "Requirement already satisfied: cachetools<6.0,>=2.0.0 in /usr/local/lib/python3.12/dist-packages (from google-auth<3.0.0,>=2.14.1->google-genai) (5.5.2)\n",
+            "Requirement already satisfied: pyasn1-modules>=0.2.1 in /usr/local/lib/python3.12/dist-packages (from google-auth<3.0.0,>=2.14.1->google-genai) (0.4.2)\n",
+            "Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.12/dist-packages (from google-auth<3.0.0,>=2.14.1->google-genai) (4.9.1)\n",
+            "Requirement already satisfied: certifi in /usr/local/lib/python3.12/dist-packages (from httpx<1.0.0,>=0.28.1->google-genai) (2025.10.5)\n",
+            "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.12/dist-packages (from httpx<1.0.0,>=0.28.1->google-genai) (1.0.9)\n",
+            "Requirement already satisfied: h11>=0.16 in /usr/local/lib/python3.12/dist-packages (from httpcore==1.*->httpx<1.0.0,>=0.28.1->google-genai) (0.16.0)\n",
+            "Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/dist-packages (from pydantic<3.0.0,>=2.9.0->google-genai) (0.7.0)\n",
+            "Requirement already satisfied: pydantic-core==2.33.2 in /usr/local/lib/python3.12/dist-packages (from pydantic<3.0.0,>=2.9.0->google-genai) (2.33.2)\n",
+            "Requirement already satisfied: typing-inspection>=0.4.0 in /usr/local/lib/python3.12/dist-packages (from pydantic<3.0.0,>=2.9.0->google-genai) (0.4.2)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.28.1->google-genai) (3.4.4)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests<3.0.0,>=2.28.1->google-genai) (2.5.0)\n",
+            "Requirement already satisfied: pyasn1<0.7.0,>=0.6.1 in /usr/local/lib/python3.12/dist-packages (from pyasn1-modules>=0.2.1->google-auth<3.0.0,>=2.14.1->google-genai) (0.6.1)\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install Flask pyngrok line-bot-sdk requests # openai\n",
+        "!pip install google-genai"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "1KKf_Fcj07IL"
+      },
+      "outputs": [],
+      "source": [
+        "from google.colab import userdata\n",
+        "\n",
+        "ngrok_authtoken = userdata.get('NGROK_AUTHTOKEN')\n",
+        "port=5051"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "wzTtCRiY07IL"
+      },
+      "outputs": [],
+      "source": [
+        "import os\n",
+        "from pyngrok import ngrok"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "apkijG0_07IL"
+      },
+      "outputs": [],
+      "source": [
+        "ngrok.kill()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "51as6GJy07IL"
+      },
+      "outputs": [],
+      "source": [
+        "ngrok.set_auth_token(ngrok_authtoken)\n",
+        "tunnel = ngrok.connect(port, name=\"linebot_tunnel\")\n",
+        "print(tunnel.public_url)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "fRpq6okS07IL"
+      },
+      "outputs": [],
+      "source": [
+        "from flask import Flask\n",
+        "\n",
+        "app = Flask(__name__)\n",
+        "\n",
+        "@app.route('/')\n",
+        "def home():\n",
+        "    return \"<h1>Colab連線成功</h1>\"\n",
+        "\n",
+        "if __name__ == '__main__':\n",
+        "    app.run(port=port)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "mBptfdcR07IM"
+      },
+      "outputs": [],
+      "source": [
+        "ngrok.kill()"
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.12.12"
+    },
+    "colab": {
+      "provenance": []
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
